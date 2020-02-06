@@ -1,0 +1,12 @@
+---
+title: "Sick Cats Project"
+author: "Ana Sofia Guerra & Gabriel Runte"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Hello! Testing this. Try Comitting and pushing with a response to make sure we get the hang of this. 
+ 

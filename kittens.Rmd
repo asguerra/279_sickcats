@@ -10,3 +10,39 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Hello! Testing this. Try Comitting and pushing with a response to make sure we get the hang of this. 
  
+ 
+# Written Paper
+
+### Introduction
+200 words, at least two references. 
+ 
+## The Model
+
+1. Describe core model equations in words
+
+### Model Assumptions:
+List model assumptions
+
+### Variables and Parameters
+Table of variables and parameters, meanings, units, and any values used in paper
+
+### Time Series
+Show how outcomes differ as a function of interesting parameters. include caption. 
+
+### Bifurcation diagram
+
+## Extension Section
+
+1. Describe a modification to the model - in words and in math
+
+2. Illustrate effects of modiification with one figure 
+
+### Discussion
+
+1. 100 words + 2 references
+
+2. Critique applicability/limitations
+
+3. Interpret results - what is the ecological significance? 
+
+

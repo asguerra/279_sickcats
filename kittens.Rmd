@@ -63,7 +63,7 @@ $$
 $$
 where: $$\theta(P) = \beta_{PM}$$
 
-if the contact rate between predator individuals in constant, the incidence is of proportionate mixing type. 
+is the incidence is of proportionate mixing type if the contact rate between predator individuals in constant.
 
 The incidence is of mass actioin type if the conact rate between predator individuals increases linearly with population size, $$\theta(P) = \beta_{PM} P$$
 
@@ -129,6 +129,10 @@ List model assumptions
 
 ### Variables and Parameters
 Table of variables and parameters, meanings, units, and any values used in paper
+
+```{r parameters.table, include=T}
+#parameters.table <- data.frame("parameter" = c("r","K",paste($\mu$),"a","d",), "definition" = " ", "value" = , "units" =, stringsAsFactors = FALSE)
+```
 
 ### Time Series
 Show how outcomes differ as a function of interesting parameters. include caption. 

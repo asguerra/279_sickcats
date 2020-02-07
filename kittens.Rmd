@@ -10,6 +10,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Hello! Testing this. Try Comitting and pushing with a response to make sure we get the hang of this. 
  
+```{r packages}
+#install.packages("deSolve", dependencies = T)
+library(deSolve)
+require(deSolve)
+
+library(tidyverse) #install.packages('tidyverse)
+```
  
 # Written Paper
 
@@ -18,7 +25,104 @@ Hello! Testing this. Try Comitting and pushing with a response to make sure we g
  
 ## The Model
 
-1. Describe core model equations in words
+**1. Describe core model equations in words**
+
+starts with Lotka-Volterra predation model:
+$$
+\begin{align}
+\frac{d N}{dT}  &= rN(1-N/K)-\mu NP 
+\newline
+\newline
+\frac{d P}{dT} &= a\mu NP-dP
+\newline
+\end{align}
+$$
+where:
+N(T): population size of prey (birds)
+P(T): population size of predators (cats)
+T: time
+*r*: per capita growth rate
+*K*: carrying capacity
+*mu*: predation rate (per capita and unit prey)
+*d*: predator per-capita mortality rate
+*a*: trophic conversion efficiency
+
+...incorporating FIV, P = Susceptible + Infected (with no recovery or immunity), and there is only one stage of the illness (FIV). so:
+
+$$
+\begin{align}
+\ P= S + I
+\newline
+\newline
+\frac{d S}{dT}  &=  a\mu NP-dS-\theta(P) \frac{S I}{P}
+\newline
+\newline
+\frac{d I}{dT} &= \theta(P) \frac{S I}{P}-dI-\delta I
+\newline
+\end{align}
+$$
+where: $$\theta(P) = \beta_{PM}$$
+
+if the contact rate between predator individuals in constant, the incidence is of proportionate mixing type. 
+
+The incidence is of mass actioin type if the conact rate between predator individuals increases linearly with population size, $$\theta(P) = \beta_{PM} P$$
+
+
+re-writing model equations, with i being disease prevalence: 
+$$ i = I/(S+I) $$
+
+They introduce dimensionless variables (in order to reduce the number of parameters), where:
+$$ 
+\begin{align}
+B=N/K
+\newline
+C=P\mu /r
+\newline
+t=rT
+\end{align}
+$$
+**so the main equations in the model are: **
+
+$$
+\begin{align}
+\frac{d B}{dt}  &= B(1-B)-BC
+\newline
+\newline
+\frac{d C}{dt}  &= eBC-mC-\alpha Ci
+\newline
+\newline
+\frac{d i}{dt}  &= ([\Gamma(C) - \alpha] [1-i] - eB)i
+\newline
+\end{align}
+$$
+where
+
+$$
+\begin{align}
+\Gamma (C)  &= \frac{\beta_{PM}}{r} = \sigma_{PM}
+\newline
+\newline
+and
+\newline
+\newline
+\Gamma (C)  &= \frac{\beta_{MA}}{\mu}C = \sigma_{MA}C
+\newline
+\end{align}
+$$
+for proportionate mixing and mass action transmission respectively. 
+
+$$
+\begin{align}
+e  &= \frac{\alpha \mu K}{r}
+\newline
+\newline
+m  &= \frac{d}{r}
+\newline
+\newline
+\alpha  &= \frac{\delta}{r}
+\newline
+\end{align}
+$$
 
 ### Model Assumptions:
 List model assumptions

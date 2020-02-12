@@ -124,6 +124,18 @@ $$
 
 #### Coding the model
 
+
+initial bird populatiion (B)
+initial cat population (C)
+initial disease prevelance (i)
+
+r (bird growth rate) = 0.1
+a (trophic conversion efficiency) = 0.03
+d (cat natural death rate) = 0.6
+BPM (constant contact rate) = 1.6
+v (virulence) = 0.2
+
+
 ### Model Assumptions:
 List model assumptions
 

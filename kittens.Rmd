@@ -131,7 +131,6 @@ a <- 0.03 #trophic conversion efficiency
 d <-  0.6 #(cat natural death rate) 
 BPM <- 1.6 #constant contact rate
 v <-  0.2 #virulence
-<<<<<<< HEAD
 ```
 
 ```{r unknown.parameters}
@@ -147,12 +146,7 @@ al <- v/r
 ```
 
 
-=======
-m <- d/r
-alpha <- v/r
-```
 
->>>>>>> 2a40ce79e7c756e6a2dfa0013a5a248c89c5b9fd
 ```{r variables}
 tset <- seq(from = 0, to = 60, length.out = 10000)
 B.sim <- NaN*tset #bird pop 

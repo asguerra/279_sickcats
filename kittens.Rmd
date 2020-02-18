@@ -134,31 +134,67 @@ v <-  0.2 #virulence
 ```
 
 ```{r unknown.parameters}
-K <- #some value here #bird carrying capacity
-mu <- #some value #cat predation rate
-BMA <- #some value #contact rate2
-N0 <- #some number
-P0 <- #some number
+K <- 200#some value here #bird carrying capacity
+mu <- 0.004#some value #cat predation rate
+#BMA <- #some value #contact rate2
+N0 <- 60#some number
+P0 <- 20#some number
+i0 <- 0.1
 ```
 
 ```{r dimensionless.parameters}
 e <- (a*mu*K)/r
 m <- d/r
 al <- v/r
+B0 <- N0/K
+C0 <- (P0*mu)/r
 ```
+
+
 
  So do we make the simulations of N divided by K, or just of B, or just of B? I guess it might not matter so long as we pick N0 and K and solve for N later?
 
 ```{r variables}
-tset <- seq(from = 0, to = 60, length.out = 10000)
+tset <- seq(from = 0, to = 60, length.out = 100)
 B.sim <- NaN*tset #bird pop 
 C.sim <- NaN*tset #cat pop 
 i.sim <- NaN*tset #disease prevalence
+B.sim[1]<-B0
+C.sim[1]<-C0
+i.sim[1]<-i0
+```
+
+```{r}
+for(j in 2:length(tset)){
+	dt <- tset[j]-tset[j-1]
+	B <- B.sim[j-1] 
+	C <- C.sim[j-1]
+	i <- i.sim[j-1]
+	dB<- B*(1-B)-(B*C)*dt
+	dC <- ((e*B*C)-(m*C)-(al*C*i))*dt 
+	di <- (((BPM/r) - al)*(1-i) - (e*B))*i
+	B.sim[j] <- B + dB 
+	C.sim[j] <- C + dC 
+	i.sim[j] <- i + di 
+}
 ```
 
 
 
+```{r}
+Bcol <- 'dodgerblue3'
+Ccol <- 'coral'
+icol <- 'darkgoldenrod4'
 
+
+plot(x = tset, y = B.sim, type = 'l', col=Bcol, las = 1, lwd=2, xlab = 'Time', ylab = 'Number of Individuals', ylim = c(-1000,1000))
+abline(h = 0)
+lines(x = tset, y = C.sim, col = Ccol, lwd = 2)
+lines(x = tset, y = i.sim, col = icol, lwd = 2)
+legend(x = max(tset)*0.1, y = 20, legend=c('B','C','i'),lwd= 2, col=c(Bcol,Ccol,icol), horiz=TRUE)
+```
+
+Looks hella weird!
 
 ### Model Assumptions:
 List model assumptions

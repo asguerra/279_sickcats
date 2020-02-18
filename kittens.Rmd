@@ -63,7 +63,7 @@ $$
 $$
 where: $$\theta(P) = \beta_{PM}$$ is the incidence is of proportionate mixing type if the contact rate between predator individuals in constant.
 
-The incidence is of mass actioin type if the conact rate between predator individuals increases linearly with population size, $$\theta(P) = \beta_{PM} P$$
+The incidence is of mass action type if the conact rate between predator individuals increases linearly with population size, $$\theta(P) = \beta_{PM} P$$
 
 
 re-writing model equations, with i being disease prevalence: 

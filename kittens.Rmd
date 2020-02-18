@@ -137,6 +137,8 @@ v <-  0.2 #virulence
 K <- #some value here #bird carrying capacity
 mu <- #some value #cat predation rate
 BMA <- #some value #contact rate2
+N0 <- #some number
+P0 <- #some number
 ```
 
 ```{r dimensionless.parameters}
@@ -145,7 +147,7 @@ m <- d/r
 al <- v/r
 ```
 
-
+ So do we make the simulations of N divided by K, or just of B, or just of B? I guess it might not matter so long as we pick N0 and K and solve for N later?
 
 ```{r variables}
 tset <- seq(from = 0, to = 60, length.out = 10000)

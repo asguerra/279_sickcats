@@ -21,19 +21,19 @@ A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelli
 
 In the case of this model, the authors introduced dimensionless parameters to simply the model and thus avoid making incorrect assumptions about unknown variables such as $$\mu$$, the predation rate, and **K**, the bird population carrying capacity, as well as initial population sizes for birds, cats, and FIV. 
 
-Thus, a lot of our values below are classified as 'NaN' as they are not applied in the model, but do exist. 
+Thus, a lot of our values below are classified as `NaN` as they are not applied in the model, but do exist. 
 ```{r}
 ##Variables
-N.v <- NaN    ## population size for victims (birds)
-N.p <- NaN    ## population size for predators (cats)
+#N.v <- NaN    ## population size for victims (birds)
+#N.p <- NaN    ## population size for predators (cats)
 t.time.set <- seq(1, 200, length.out= 2000) ## time
 
 
 
 ##Parameter values##
-K <- NaN            # carrying capacity               (will be estimated from dimensionless parameters)
-u <- NaN            # predation rate                  (will be estimated from dimensionless parameters)
-beta.ma <- NaN      # contact rate for mass action    (will be estimated from dimensionless parameters)    
+#K <- NaN            # carrying capacity               (will be estimated from dimensionless parameters)
+#u <- NaN            # predation rate                  (will be estimated from dimensionless parameters)
+#beta.ma <- NaN      # contact rate for mass action    (will be estimated from dimensionless parameters)    
 
 r.v <- 0.1          # per capita growth rate of birds in the model
 a <- 0.03           # trophic conversion efficiency of cats
@@ -49,13 +49,13 @@ t.set <- r.v*t.time.set
 
 #dimensionless parameters
 sigma.pm <- beta.pm/r.v
-sigma.pm.set <- seq(0,25, length.out = 20000)
+#sigma.pm.set <- seq(0,25, length.out = 20000)
 sigma.ma <- beta.ma * C/u 
-sigma.ma.set<- seq(0, 250, length.out = 20000)
+#sigma.ma.set<- seq(0, 250, length.out = 20000)
 
 #e <- alpha*u*K/r.v
 e <- 10
-e.set <- seq(0, 25, length.out = 20000)
+#e.set <- seq(0, 25, length.out = 20000)
 m <- d.p/r.v
 alpha <- delta/r.v
 
@@ -69,10 +69,11 @@ B.simu1 <- NaN*t.set
 C.simu1 <- NaN*t.set
   C.simu1[1] <- .7
 I.simu1 <- NaN*t.set
-  I.simu1[1] <- .4
+  I.simu1[1] <- 0.4
 
 #for PM
 for(i in 2:length(t.set)){
+  
   dt <- t.set[i]-t.set[i-1]
   B <- B.simu1[i-1]
   C <- C.simu1[i-1]
@@ -91,6 +92,6 @@ for(i in 2:length(t.set)){
 plot(t.set, B.simu1, type= "l", ylim= c(0, 1))  
 lines(t.set,C.simu1,lwd=2,col='dodgerblue')
 lines(t.set, I.simu1, lwd = 2, col= "coral3")
-B.simu1
+
 ```
 

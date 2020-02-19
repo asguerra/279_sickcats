@@ -127,6 +127,12 @@ $$
 
 #### Coding the model
 
+A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
+
+In the case of this model, the authors introduced dimensionless parameters to simply the model and thus avoid making incorrect assumptions about unknown variables such as $$\mu$$, the predation rate, and **K**, the bird population carrying capacity, as well as initial population sizes for birds, cats, and FIV. 
+
+Thus, a lot of our values below are classified as 'NaN' as they are not applied in the model, but do exist. 
+
 ```{r known.parameters}
 #known model parameters
 r <- 0.1 #bird growth rate

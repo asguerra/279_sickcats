@@ -1,14 +1,27 @@
 ---
-title: "timeseries"
-author: "Gabe Runte"
+title: "EEMB 279 Project"
+subtitle: "Time Series"
+author: "Gabe Runte and Ana Sofia Guerra"
 date: "2/18/2020"
 output: html_document
+output: word_document
 ---
-
+```{r packages, include=FALSE}
+#install.packages("deSolve", dependencies = T)
+library(deSolve)
+require(deSolve)
+library(tidyverse) #install.packages('tidyverse)
+```
+ 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
+
+In the case of this model, the authors introduced dimensionless parameters to simply the model and thus avoid making incorrect assumptions about unknown variables such as $$\mu$$, the predation rate, and **K**, the bird population carrying capacity, as well as initial population sizes for birds, cats, and FIV. 
+
+Thus, a lot of our values below are classified as 'NaN' as they are not applied in the model, but do exist. 
 ```{r}
 ##Variables
 N.v <- NaN    ## population size for victims (birds)

@@ -18,6 +18,9 @@ require(deSolve)
 library(tidyverse) #install.packages('tidyverse)
 ```
  
+A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
+
+
 # Written Paper
 
 ### Introduction

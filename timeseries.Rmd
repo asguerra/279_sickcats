@@ -1,34 +1,24 @@
 ---
 title: "EEMB 279 Project"
-subtitle: "Time Series"
 author: "Gabe Runte and Ana Sofia Guerra"
 date: "2/18/2020"
-output: html_document
-output: word_document
+output:
+  word_document: default
+  pdf_document: default
+  html_document:
+    df_print: paged
+subtitle: Time Series
 ---
-```{r packages, include=FALSE}
-#install.packages("deSolve", dependencies = T)
-library(deSolve)
-require(deSolve)
-library(tidyverse) #install.packages('tidyverse)
-```
- 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
 
 In the case of this model, the authors introduced dimensionless parameters to simply the model and thus avoid making incorrect assumptions about unknown variables such as $$\mu$$, the predation rate, and **K**, the bird population carrying capacity, as well as initial population sizes for birds, cats, and FIV. 
 
 Thus, a lot of our values below are classified as `NaN` as they are not applied in the model, but do exist. 
-```{r}
+```{r var.params, include=TRUE}
 ##Variables
 #N.v <- NaN    ## population size for victims (birds)
 #N.p <- NaN    ## population size for predators (cats)
 t.time.set <- seq(1, 200, length.out= 2000) ## time
-
-
 
 ##Parameter values##
 #K <- NaN            # carrying capacity               (will be estimated from dimensionless parameters)
@@ -42,15 +32,15 @@ beta.pm <- 1.5      # contact rate for proportionate mixing
 delta <- 0.2        # virulence
 
 #core equations
-B <- N.v/K
+#B <- N.v/K
 B.set <-seq(0, 1, length.out=20000)
-C <- N.p*u/r.v
+#C <- N.p*u/r.v
 t.set <- r.v*t.time.set
 
 #dimensionless parameters
 sigma.pm <- beta.pm/r.v
 #sigma.pm.set <- seq(0,25, length.out = 20000)
-sigma.ma <- beta.ma * C/u 
+#sigma.ma <- beta.ma * C/u 
 #sigma.ma.set<- seq(0, 250, length.out = 20000)
 
 #e <- alpha*u*K/r.v
@@ -61,26 +51,29 @@ alpha <- delta/r.v
 
 ```
 
-
-
+In this time series we selected a biologically relevant, yet random value for e (10 in this case), from the range provided by the authors of the study. We can produce a time series with different values of e. As was done in a time series in the study, there was a lag in the introduction of FIV to the cat population. In this case we introduced FIV at time step 3. 
 ```{r}
 B.simu1 <- NaN*t.set 
-  B.simu1[1] <- .7
+  B.simu1[1] <- .3
 C.simu1 <- NaN*t.set
-  C.simu1[1] <- .7
+  C.simu1[1] <- .75
 I.simu1 <- NaN*t.set
-  I.simu1[1] <- 0.4
-
+# I.simu1[1] <- 0
+  Ino <- 0
+  Istart <- 0.2
 #for PM
 for(i in 2:length(t.set)){
   
+  	if(t.set[i] < 3){I.simu1[i-1] <- Ino } else { 
+  	  if(t.set[i] == 3) {I.simu1[i-1] <- Istart} else { I <- I.simu1[i-1]}}
+	
   dt <- t.set[i]-t.set[i-1]
   B <- B.simu1[i-1]
   C <- C.simu1[i-1]
-  I <- I.simu1[i-1]
+# I <- I.simu1[i-1]
   
   dB <- (B*(1-B) -B*C) *dt
-  dC <- (e*B*C - m*C - alpha*C*I )*dt
+  dC <- (e*B*C - m*C - alpha*C*I)*dt
   dI <- (((sigma.pm - alpha)* (1-I) - e*B)*I) *dt
   
   B.simu1[i] <- B + dB
@@ -89,9 +82,11 @@ for(i in 2:length(t.set)){
 }
 
   
-plot(t.set, B.simu1, type= "l", ylim= c(0, 1))  
+plot(t.set, B.simu1, type= "l", ylim= c(0, 1), ylab="Population (dimensionless)", xlab="time (rT)")  
 lines(t.set,C.simu1,lwd=2,col='dodgerblue')
 lines(t.set, I.simu1, lwd = 2, col= "coral3")
+legend(x=16,y=1, col = c("black","dodgerblue","coral3"), lty=1,lwd=2,legend = c("birds", "cats", "FIV"))
+text(x=3.4, y=0.03, labels="FIV introduced",adj=0)
 
 ```
 

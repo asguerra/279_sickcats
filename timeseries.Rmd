@@ -1,10 +1,10 @@
 ---
 title: "EEMB 279 Project"
-author: "Gabe Runte and Ana Sofia Guerra"
+author: "Gabriel Runte and Ana Sofia Guerra"
 date: "2/18/2020"
 output:
-  word_document: default
   pdf_document: default
+  word_document: default
   html_document:
     df_print: paged
 subtitle: Time Series
@@ -12,7 +12,7 @@ subtitle: Time Series
 
 A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
 
-In the case of this model, the authors introduced dimensionless parameters to simply the model and thus avoid making incorrect assumptions about unknown variables such as $$\mu$$, the predation rate, and **K**, the bird population carrying capacity, as well as initial population sizes for birds, cats, and FIV. 
+In the case of this model, the authors introduced dimensionless parameters to simply the model and thus avoid making incorrect assumptions about unknown variables such as$$\mu$$, the predation rate, and **K**, the bird population carrying capacity, as well as initial population sizes for birds, cats, and FIV. 
 
 Thus, a lot of our values below are classified as `NaN` as they are not applied in the model, but do exist. 
 ```{r var.params, include=TRUE}
@@ -86,15 +86,18 @@ legend(x=16,y=1, col = c("black","dodgerblue","coral3"), lty=1,lwd=2,legend = c(
 
 ```
 
-As was done in a time series in the study, there was a lag in the introduction of FIV to the cat population. In this case we introduced FIV at time step 3. Still a bit wonky, but we will figure it out to get it to work. 
-```{r simu2, eval=FALSE}
+As was done in a time series in the study, there was a lag in the introduction of FIV to the cat population. In this case we introduced FIV at time step 3. 
+
+```{r simu2, include=TRUE}
 B.simu2 <- NaN*t.set 
   B.simu2[1] <- .3
 C.simu2 <- NaN*t.set
   C.simu2[1] <- .75
 I.simu2 <- NaN*t.set
- I.simu2[1] <- 0
+# I.simu2[1] <- 0
+```
 
+```{r simu2.loop, include=TRUE}
 #for PM
 for(i in 2:length(t.set)){
   
@@ -104,7 +107,7 @@ for(i in 2:length(t.set)){
   dt <- t.set[i]-t.set[i-1]
   B <- B.simu2[i-1]
   C <- C.simu2[i-1]
-    #I.simu2[i-1]
+  #I.simu2[i-1]
   
   dB <- (B*(1-B) -B*C) *dt
   dC <- (e*B*C - m*C - alpha*C*I)*dt
@@ -114,3 +117,11 @@ for(i in 2:length(t.set)){
   C.simu2[i] <- C + dC
   I.simu2[i] <- I + dI
 }
+
+plot(t.set, B.simu2, type= "l", ylim= c(0, 1), ylab="Population (dimensionless)", xlab="time (rT)")  
+lines(t.set,C.simu2,lwd=2,col='dodgerblue')
+lines(t.set, I.simu2, lwd = 2, col= "coral3")
+legend(x=16,y=1, col = c("black","dodgerblue","coral3"), lty=1,lwd=2,legend = c("birds", "cats", "FIV"))
+text(x=3.5, y=0.04, adj=0, label="FIV introduced")
+```
+

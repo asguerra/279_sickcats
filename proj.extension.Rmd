@@ -23,4 +23,34 @@ knitr::opts_chunk$set(echo = TRUE)
 
 2. We will extend the model by assessing the effect of decreased predation from cats infected with FIV. To do this, we will divide the predation in our model, which currently lumps all cats, into cats that are healthy and cats that are sick. Sick cats will have a decreased predation rate. Mathematically, we will simply add a modifier to the infected cat predation rate that relates to the relative predation rate in comparison to healthy cats. 
 
-3. Biologically, we have anectodal evidence (fom an officemate who has had cats with FIV) that cats with FIV are both lathargic and have decreased appetites. This would clearly translate into decreased hunting pressure on a given bird population. 
+Original equations:
+$$
+\begin{align}
+\frac{d B}{dt}  &= B(1-B)-BC
+\newline
+\newline
+\frac{d C}{dt}  &= eBC-mC-\alpha Ci
+\newline
+\end{align}
+$$
+
+Modified equations:
+l = relative hunting success of sick cats (lathargy coefficient)
+$$
+\begin{align}
+\newline
+\newline
+\frac{d B}{dt}  &= B(1-B)-BC[1-i] - lBCi
+\newline
+\newline
+\frac{d C}{dt}  &= e(BC[1-i] + lBCi)-mC-\alpha Ci
+\newline
+\end{align}
+$$
+
+
+3. Biologically, we have anectodal evidence (from an officemate who has had cats with FIV) that cats with FIV are both lathargic and have decreased appetites. This would clearly translate into decreased hunting pressure on a given bird population. We expect it would be informative to add this bit of biological realism to assess the subsequent equillibria. 
+In the model, this could potentially increase the equillibrium population of the birds. It could also be relevant in understanding how significant population oscillations will be for use in culling planning. 
+
+4. We will assess the imacts of this modification by simulating population timeseries and seeing how equillibrium values change with increasing lathargy in our sick cat population. We will reoutput our bifucation diagrams with this addition. 
+

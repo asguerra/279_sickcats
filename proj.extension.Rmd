@@ -11,6 +11,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ###Extension psoposal requirements:
 1. The full citation of the paper that you will be working with.
+
+A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
+
 2. An explanation of the modification to your model that you are proposing, including how you will do this modification mathematically. (Photos or screenshots of your work pasted into a document are OK!)
 3. A paragraph (just a few sentences!) on the biological rationale for your modification. In other words, why are you making this modification? What do you hope it will tell you about the biology of the system?
 4. A paragraph (again, just a few sentences!) on how you will analyze the impacts of this modification. What mathematical tools will you use? What types of results will you produce?

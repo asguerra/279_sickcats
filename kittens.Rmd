@@ -114,7 +114,7 @@ for proportionate mixing and mass action transmission respectively.
 
 $$
 \begin{align}
-e  &= \frac{\alpha \mu K}{r}
+e  &= \frac{a \mu K}{r}
 \newline
 \newline
 m  &= \frac{d}{r}

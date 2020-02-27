@@ -14,11 +14,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 2. An explanation of the modification to your model that you are proposing, including how you will do this modification mathematically. (Photos or screenshots of your work pasted into a document are OK!)
 
-
-
 3. A paragraph (just a few sentences!) on the biological rationale for your modification. In other words, why are you making this modification? What do you hope it will tell you about the biology of the system?
 4. A paragraph (again, just a few sentences!) on how you will analyze the impacts of this modification. What mathematical tools will you use? What types of results will you produce?
 
+
+
 1. Paper: Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
 
-2. 
+2. We will extend the model by assessing the effect of decreased predation from cats infected with FIV. To do this, we will divide the predation in our model, which currently lumps all cats, into cats that are healthy and cats that are sick. Sick cats will have a decreased predation rate. Mathematically, we will simply add a modifier to the infected cat predation rate that relates to the relative predation rate in comparison to healthy cats. 
+
+3. Biologically, we have anectodal evidence (fom an officemate who has had cats with FIV) that cats with FIV are both lathargic and have decreased appetites. This would clearly translate into decreased hunting pressure on a given bird population. 

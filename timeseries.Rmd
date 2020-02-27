@@ -142,8 +142,8 @@ for(i in 2:length(t.set)){
   C <- C.simu3[i-1]
   #I.simu3[i-1]
   
-  dB <- (B*(1-B) -B*C*(1/((I)+1)) - z*B*I*C ) *dt
-  dC <- (e*(B*C*(1/((I)+1)) + z*B*I*C) - m*C - alpha*C*I)*dt
+  dB <- (B*(1-B) -B*C*(1-I) - z*B*I*C ) *dt
+  dC <- (e*(B*C*(1-I) + z*B*I*C) - m*C - alpha*C*I)*dt
   dI <- (((sigma.pm - alpha)* (1-I) - e*B)*I) *dt
   
   B.simu3[i] <- B + dB

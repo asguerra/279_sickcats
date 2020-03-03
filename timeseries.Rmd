@@ -162,6 +162,8 @@ legend(x=17,y=1, col = c("paleturquoise4","paleturquoise3","sienna3", "sienna1",
 text(x=3.5, y=0.04, adj=0, label="FIV introduced")
 
 
+
+
 plot(t.set, B.simu3,type= "l", ylim= c(0, 1), ylab="Population (dimensionless)", xlab="time (rT)", col= 'Dodgerblue2')
 lines(t.set, B.simu2, lwd=2, col= 'coral3')
 

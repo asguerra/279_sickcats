@@ -5,16 +5,15 @@ output: word_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, include=TRUE)
 ```
 
 Hello! Testing this. Try Comitting and pushing with a response to make sure we get the hang of this. 
  
-```{r packages}
+```{r packages, include=FALSE}
 #install.packages("deSolve", dependencies = T)
 library(deSolve)
 require(deSolve)
-
 library(tidyverse) #install.packages('tidyverse)
 ```
  
@@ -23,14 +22,23 @@ A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelli
 
 # Written Paper
 
-### Introduction
-200 words, at least two references. 
- 
+### Introduction 
+`Need to add a few more sentences to this intro to fill it out a bit more. Maybe on the fact that the paper iis a counter to the original paper by Courchamp and Sugihara, 1999.`
+Island ecosystems are some of the most vulnerable to human impact (CITE). In particular, birds found on islands have been found to be negatively impacted by the introduction of predatory species to islands (CITE - Sax and Brown 2000?). In the Aleutian Islands, the indroduction of artic foxes to some islands led to a precipitous decline of ground-nesting seabird populations on these islands (Croll 2005). On various tropicial(?) islands, including ...[insert] and [insert], the introduction of domestic cats (**Felis catus**), has severly depleted native bird populations (CITE). As a result, finding ways to exterminate or controll populations of invasive cats have become of importance to wilidlife managers (CITE). 
+Using introduced diseases as biological control has been proposed as a method to control populations of domestic cats on islands (but see Strong and Pemberton 2000). The Feline Immunodeficiency Virus (FIV) has been proposed as a potentially successful biological control agent given its high host-specificity, meaniing it is unlikely to infect other wildlife present on the island. The model developed by Oliveira and Hilker aims to show how the introduction of FIV to an island with introduced cats and native birds may affect both populatioiins and thus affect conservatioin outcomes for imperiled birds (Oliveira and Hilker 2010). 
+
 ## The Model
 
 **1. Describe core model equations in words**
 
-starts with Lotka-Volterra predation model:
+The authors provide a standard Lotka-Volterra predation model (eq. 1 & 2) to describe how a logistically growing bird population (N) with intrinsic growth rate **r** and carrying capacity **K** is decreased by predation by cats (P), with cats having an attack rate **a**, conversiioin efficiency $\mu$, and natural mortality rate **d** .
+
+The introduction of FIV is then modeled by considering the total cat population (P) being split into susceptible (S) and infected (I) individuals, where the susceptible cat population is similar to the Lotka Volterra predator population (eq. 2), and decreases as cats are infected. The infected cat population (I), depends on FIV infectivity and cat-to-cat contact rate (**add theta value**) and decreases with both natural mortality and FIV-inflicted deaths due to virulence. 
+Finding the correct values for the proposed parameters; however, proved to be complicated. 
+
+Therefore, the authors provide a non-dimensional model in which we then examine [what is B in words?] (B), as ....equation in words.., [C in words] (C), as...., and i, as FIV prevalence (or proportion of infected cats). 
+
+[describe non-dimensional equations]
 $$
 \begin{align}
 \frac{d N}{dT}  &= rN(1-N/K)-\mu NP 
@@ -127,83 +135,81 @@ $$
 
 #### Coding the model
 
-A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
-
-In the case of this model, the authors introduced dimensionless parameters to simply the model and thus avoid making incorrect assumptions about unknown variables such as $$\mu$$, the predation rate, and **K**, the bird population carrying capacity, as well as initial population sizes for birds, cats, and FIV. 
+In the case of this model, the authors introduced dimensionless parameters to simplify the model and thus avoid making incorrect assumptions about unknown variables such as $$\mu$$, the predation rate, and **K**, the bird population carrying capacity, as well as initial population sizes for birds, cats, and FIV. 
 
 Thus, a lot of our values below are classified as 'NaN' as they are not applied in the model, but do exist. 
 
-```{r known.parameters}
-#known model parameters
-r <- 0.1 #bird growth rate
-a <- 0.03 #trophic conversion efficiency
-d <-  0.6 #(cat natural death rate) 
-BPM <- 1.6 #constant contact rate
-v <-  0.2 #virulence
+```{r var.params, include=TRUE}
+##Variables
+#N.v <- NaN    ## population size for victims (birds)
+#N.p <- NaN    ## population size for predators (cats)
+t.time.set <- seq(1, 200, length.out= 2000) ## time
+
+##Parameter values##
+#K <- NaN            # carrying capacity               (will be estimated from dimensionless parameters)
+#u <- NaN            # predation rate                  (will be estimated from dimensionless parameters)
+#beta.ma <- NaN      # contact rate for mass action    (will be estimated from dimensionless parameters)    
+
+r.v <- 0.1          # per capita growth rate of birds in the model
+a <- 0.03           # trophic conversion efficiency of cats
+d.p <- 0.6          # natural per capita death rate of cats
+beta.pm <- 1.5      # contact rate for proportionate mixing
+delta <- 0.2        # virulence
+
+#core equations
+#B <- N.v/K
+B.set <-seq(0, 1, length.out=20000)
+#C <- N.p*u/r.v
+t.set <- r.v*t.time.set
+
+#dimensionless parameters
+sigma.pm <- beta.pm/r.v
+#sigma.pm.set <- seq(0,25, length.out = 20000)
+#sigma.ma <- beta.ma * C/u 
+#sigma.ma.set<- seq(0, 250, length.out = 20000)
+
+#e <- alpha*u*K/r.v
+e <- 10
+#e.set <- seq(0, 25, length.out = 20000)
+m <- d.p/r.v
+alpha <- delta/r.v
+
 ```
 
-```{r unknown.parameters}
-K <- 200#some value here #bird carrying capacity
-mu <- 0.004#some value #cat predation rate
-#BMA <- #some value #contact rate2
-N0 <- 60#some number
-P0 <- 20#some number
-i0 <- 0.1
-```
+```{r simu2, include=TRUE}
+B.simu2 <- NaN*t.set 
+  B.simu2[1] <- .3
+C.simu2 <- NaN*t.set
+  C.simu2[1] <- .75
+I.simu2 <- NaN*t.set
+# I.simu2[1] <- 0
 
-```{r dimensionless.parameters}
-e <- (a*mu*K)/r
-m <- d/r
-al <- v/r
-B0 <- N0/K
-C0 <- (P0*mu)/r
-```
-
-
-
- So do we make the simulations of N divided by K, or just of B, or just of B? I guess it might not matter so long as we pick N0 and K and solve for N later?
-
-```{r variables}
-tset <- seq(from = 0, to = 60, length.out = 100)
-B.sim <- NaN*tset #bird pop 
-C.sim <- NaN*tset #cat pop 
-i.sim <- NaN*tset #disease prevalence
-B.sim[1]<-B0
-C.sim[1]<-C0
-i.sim[1]<-i0
-```
-
-```{r}
-for(j in 2:length(tset)){
-	dt <- tset[j]-tset[j-1]
-	B <- B.sim[j-1] 
-	C <- C.sim[j-1]
-	i <- i.sim[j-1]
-	dB<- B*(1-B)-(B*C)*dt
-	dC <- ((e*B*C)-(m*C)-(al*C*i))*dt 
-	di <- (((BPM/r) - al)*(1-i) - (e*B))*i
-	B.sim[j] <- B + dB 
-	C.sim[j] <- C + dC 
-	i.sim[j] <- i + di 
+#for PM
+for(i in 2:length(t.set)){
+  
+  	if(t.set[i] < 3){I.simu2[i-1] <- 0 } else { 
+  	  if(t.set[i] == 3) {I.simu2[i-1] <- 0.2} else { I<- I.simu2[i-1]}}
+	
+  dt <- t.set[i]-t.set[i-1]
+  B <- B.simu2[i-1]
+  C <- C.simu2[i-1]
+  #I.simu2[i-1]
+  
+  dB <- (B*(1-B) -B*C) *dt
+  dC <- (e*B*C - m*C - alpha*C*I)*dt
+  dI <- (((sigma.pm - alpha)* (1-I) - e*B)*I) *dt
+  
+  B.simu2[i] <- B + dB
+  C.simu2[i] <- C + dC
+  I.simu2[i] <- I + dI
 }
+
+plot(t.set, B.simu2, type= "l", ylim= c(0, 1), ylab="Population (dimensionless)", xlab="time (rT)") 
+lines(t.set,C.simu2,lwd=2,col='dodgerblue')
+lines(t.set, I.simu2, lwd = 2, col= "coral3")
+legend(x=16,y=1, col = c("black","dodgerblue","coral3"), lty=1,lwd=2,legend = c("birds", "cats", "FIV"))
+text(x=3.5, y=0.04, adj=0, label="FIV introduced")
 ```
-
-
-
-```{r}
-Bcol <- 'dodgerblue3'
-Ccol <- 'coral'
-icol <- 'darkgoldenrod4'
-
-
-plot(x = tset, y = B.sim, type = 'l', col=Bcol, las = 1, lwd=2, xlab = 'Time', ylab = 'Number of Individuals', ylim = c(-1000,1000))
-abline(h = 0)
-lines(x = tset, y = C.sim, col = Ccol, lwd = 2)
-lines(x = tset, y = i.sim, col = icol, lwd = 2)
-legend(x = max(tset)*0.1, y = 20, legend=c('B','C','i'),lwd= 2, col=c(Bcol,Ccol,icol), horiz=TRUE)
-```
-
-Looks hella weird!
 
 ### Model Assumptions:
 List model assumptions

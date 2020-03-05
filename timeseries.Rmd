@@ -15,7 +15,7 @@ Thus, a lot of our values below are classified as `NaN` as they are not applied 
 ##Variables
 #N.v <- NaN    ## population size for victims (birds)
 #N.p <- NaN    ## population size for predators (cats)
-t.time.set <- seq(1, 200, length.out= 2000) ## time
+t.time.set <- seq(1, 200, length.out= 200000) ## time
 
 ##Parameter values##
 #K <- NaN            # carrying capacity               (will be estimated from dimensionless parameters)
@@ -180,49 +180,48 @@ text(x=3.5, y=0.04, adj=0, label="FIV introduced")
 
 ```{r}
 
-mu <- 4 #not given
-a <- 0.3 #trophic conversion
-d <- 0.6 #per capita death
-beta.pm <- 13 #pm contact rate
-gamma <- 4.8 # virulence
+mu <- 1 #not given
+a <- 0.6 #trophic conversion
+d <- 0.15 #per capita death
+beta.pm <- .75 #pm contact rate
+delta <- .1 # virulence
 K<- 1
-r<- 0.6
+r<- .4
 
 l <- 0.25 #percent activity of sick cats (lathargy)
 #for PM
 N.simu4 <- NaN*t.time.set 
   N.simu4[1] <- .3
 S.simu4 <- NaN*t.time.set
-  S.simu4[1] <- .75
+  S.simu4[1] <- .7
 I.simu4 <- NaN*t.time.set
-  I.simu4[1] <- .0
+  I.simu4[1] <- .2
 
 for(i in 2:length(t.time.set)){
   
-  #	if(t.set[i] < 3){I.simu4[i-1] <- 0 } else { 
-  	#  if(t.set[i] == 3) {I.simu4[i-1] <- 0.2} else { I<- I.simu4[i-1]}}
 	
   dt <- t.time.set[i]-t.time.set[i-1]
   N <- N.simu4[i-1]
   S <- S.simu4[i-1]
   I <- I.simu4[i-1]
+  
   P <- S + I
   
   dN <- (r*N*(1-N/K)-mu*N*P) * dt
   dS <- ((a*mu*N*P)-(d*S) - (beta.pm*(S*I/P))) * dt
-  dI <- (beta.pm* (S*I/P) - d*I -gamma*I) * dt
+  dI <- (beta.pm* (S*I/P) - d*I -delta*I) * dt
   
   N.simu4[i] <- N + dN
   S.simu4[i] <- S + dS
   I.simu4[i] <- I + dI
  }
 
-plot(t.time.set, N.simu4, type= "l", ylim= c(0, 1), xlim=c(0, 100), ylab="Population (dimensionless)", xlab="time (rT)", col='paleturquoise4')  
+plot(t.time.set, N.simu4, type= "l", ylim= c(0,1), ylab="Population (dimensionless)", xlab="time (rT)", col='paleturquoise4')  
 lines(t.time.set,S.simu4,lwd=2,col='gray21')
 lines(t.time.set, I.simu4, lwd = 2, col= "sienna3")
 
 
-legend(x=17,y=1, col = c("paleturquoise4","sienna3", "gray21" ), lty=1,lwd=2,legend = c( "regular birds",  " regular FIV", "regular cats"))
+legend(x=150,y=10, col = c("paleturquoise4","sienna3", "gray21" ), lty=1,lwd=2,legend = c( "regular birds",  " regular FIV", "regular cats"))
 text(x=3.5, y=0.04, adj=0, label="FIV introduced")
 
 
@@ -230,4 +229,55 @@ text(x=3.5, y=0.04, adj=0, label="FIV introduced")
 
 
 ```
+
+```{r}
+mu <- 1 #predation rate
+a <- 0.6 #trophic conversion
+d <- 0.15 #per capita death
+#beta.pm <- .33 #pm contact rate
+#delta <- .16 # virulence
+K<- 1
+r<- .7
+
+l <- 0.25 #percent activity of sick cats (lathargy)
+#for PM
+N.simu6 <- NaN*t.time.set 
+  N.simu6[1] <- .3
+S.simu6 <- NaN*t.time.set
+  S.simu6[1] <- .7
+I.simu6 <- NaN*t.time.set
+  I.simu6[1] <- .0
+
+for(i in 2:length(t.time.set)){
+  
+ # if(t.time.set[i] < 30){I.simu6[i-1] <- 0 } else { 
+  	 #if(t.time.set[i] == 30) {I.simu6[i-1] <- 0.2} else {}}
+	
+  dt <- t.time.set[i]-t.time.set[i-1]
+  N <- N.simu6[i-1]
+  S <- S.simu6[i-1]
+  I <- I.simu6[i-1]
+  P <- S + I
+  
+  dN <- (r*N*(1-N/K)-mu*N*P) * dt
+  dS <- ((a*mu*N*P)-(d*S) - (beta.pm*(S*I/P))) * dt
+  dI <- (beta.pm* (S*I/P) - d*I -delta*I) * dt
+  
+  N.simu6[i] <- N + dN
+  S.simu6[i] <- S + dS
+  I.simu6[i] <- I + dI
+ }
+
+plot(t.time.set, N.simu6, type= "l", ylim= c(0,1),ylab="Population (dimensionless)", xlab="time (rT)", col='paleturquoise4')  
+lines(t.time.set, S.simu6,lwd=2,col='gray21')
+lines(t.time.set, I.simu6, lwd = 2, col= "sienna3")
+
+
+legend(x=150,y=10, col = c("paleturquoise4","sienna3", "gray21" ), lty=1,lwd=2,legend = c( "regular birds",  " regular FIV", "regular cats"))
+text(x=3.5, y=0.04, adj=0, label="FIV introduced")
+
+
+```
+
+
 

@@ -264,6 +264,7 @@ Bifurcation diagram with respect to ..... some parameter. Do we run into having 
 1. 100 words + 2 references
 
 2. Critique applicability/limitations
+- lethargy is probably at play here when a cat is sick, maybe not as successful at hunting or has less contact with other cats. 
 
 3. Interpret results - what is the ecological significance? 
 

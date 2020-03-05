@@ -133,12 +133,24 @@ m  &= \frac{d}{r}
 \end{align}
 $$
 
-#### Coding the model
+##Coding the model
 
 In the case of this model, the authors introduced dimensionless parameters to simplify the model and thus avoid making incorrect assumptions about unknown variables such as $$\mu$$, the predation rate, and **K**, the bird population carrying capacity, as well as initial population sizes for birds, cats, and FIV. 
 
 Thus, a lot of our values below are classified as 'NaN' as they are not applied in the model, but do exist. 
 
+### Model Assumptions:
+List model assumptions
+
+### Variables and Parameters
+Table of variables and parameters, meanings, units, and any values used in paper
+
+```{r parameters.table, include=T}
+#parameters.table <- data.frame("parameter" = c("r","K",paste($\mu$),"a","d",), "definition" = " ", "value" = , "units" =, stringsAsFactors = FALSE)
+```
+
+### Time Series
+Show how outcomes differ as a function of interesting parameters. include caption. 
 ```{r var.params, include=TRUE}
 ##Variables
 #N.v <- NaN    ## population size for victims (birds)
@@ -177,6 +189,31 @@ alpha <- delta/r.v
 ```
 
 ```{r simu2, include=TRUE}
+
+B.simu1 <- NaN*t.set 
+  B.simu1[1] <- .3
+C.simu1 <- NaN*t.set
+  C.simu1[1] <- .75
+I.simu1 <- NaN*t.set
+ I.simu1[1] <- 0.2
+
+#for PM
+for(i in 2:length(t.set)){
+  
+  dt <- t.set[i]-t.set[i-1]
+  B <- B.simu1[i-1]
+  C <- C.simu1[i-1]
+  I <- I.simu1[i-1]
+  
+  dB <- (B*(1-B) -B*C) *dt
+  dC <- (e*B*C - m*C - alpha*C*I)*dt
+  dI <- (((sigma.pm - alpha)* (1-I) - e*B)*I) *dt
+  
+  B.simu1[i] <- B + dB
+  C.simu1[i] <- C + dC
+  I.simu1[i] <- I + dI
+}
+
 B.simu2 <- NaN*t.set 
   B.simu2[1] <- .3
 C.simu2 <- NaN*t.set
@@ -210,21 +247,11 @@ lines(t.set, I.simu2, lwd = 2, col= "coral3")
 legend(x=16,y=1, col = c("black","dodgerblue","coral3"), lty=1,lwd=2,legend = c("birds", "cats", "FIV"))
 text(x=3.5, y=0.04, adj=0, label="FIV introduced")
 ```
-
-### Model Assumptions:
-List model assumptions
-
-### Variables and Parameters
-Table of variables and parameters, meanings, units, and any values used in paper
-
-```{r parameters.table, include=T}
-#parameters.table <- data.frame("parameter" = c("r","K",paste($\mu$),"a","d",), "definition" = " ", "value" = , "units" =, stringsAsFactors = FALSE)
-```
-
-### Time Series
-Show how outcomes differ as a function of interesting parameters. include caption. 
+*ADD A CAPTION FOR THE FIGURE*
 
 ### Bifurcation diagram
+Bifurcation diagram with respect to ..... some parameter. Do we run into having to make dimensional again? Or do we just pick e? 
+
 
 ## Extension Section
 

@@ -145,8 +145,12 @@ List model assumptions
 ### Variables and Parameters
 Table of variables and parameters, meanings, units, and any values used in paper
 
-```{r parameters.table, include=T}
-#parameters.table <- data.frame("parameter" = c("r","K",paste($\mu$),"a","d",), "definition" = " ", "value" = , "units" =, stringsAsFactors = FALSE)
+```{r dimensional.parameters.table, include=T}
+#parameters.table <- data.frame("parameter" = c("r","K",paste($\mu$),"a","d",paste($\beta{PM}$,paste($\delta$), "definition" = "bird intrinsic growth rate","bird carrying capacity", "predation rate (cats on birds)", "conversion efficiency of cats", "cat per-capita mortality", "contact rate for proportionate mixing", "FIV virulence"), "value" = , "units" =, stringsAsFactors = FALSE)
+```
+
+```{r non.dimensional.parameters.table, include=T}
+#parameters.table <- data.frame("parameter" = c("e","m",paste($\alpha$),"paste($\sigma{PM}$)"), "definition" = " ", "value" = , "units" =, stringsAsFactors = FALSE)
 ```
 
 ### Time Series

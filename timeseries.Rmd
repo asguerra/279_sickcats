@@ -15,7 +15,7 @@ Thus, a lot of our values below are classified as `NaN` as they are not applied 
 ##Variables
 #N.v <- NaN    ## population size for victims (birds)
 #N.p <- NaN    ## population size for predators (cats)
-t.time.set <- seq(1, 200, length.out= 200000) ## time
+t.time.set <- seq(1, 200, length.out= 2000) ## time
 
 ##Parameter values##
 #K <- NaN            # carrying capacity               (will be estimated from dimensionless parameters)
@@ -246,12 +246,12 @@ N.simu6 <- NaN*t.time.set
 S.simu6 <- NaN*t.time.set
   S.simu6[1] <- .7
 I.simu6 <- NaN*t.time.set
-  I.simu6[1] <- .0
+ # I.simu6[1] <- .0
 
 for(i in 2:length(t.time.set)){
   
- # if(t.time.set[i] < 30){I.simu6[i-1] <- 0 } else { 
-  	 #if(t.time.set[i] == 30) {I.simu6[i-1] <- 0.2} else {}}
+ if(t.time.set[i] < 30){I.simu6[i-1] <- 0 } else { 
+  	 if((t.time.set[i] > 30.068533) &&(t.time.set[i] < 30.168082)) {I.simu6[i-1] <- 0.2} else {}}
 	
   dt <- t.time.set[i]-t.time.set[i-1]
   N <- N.simu6[i-1]

@@ -195,7 +195,7 @@ N.simu4 <- NaN*t.time.set
 S.simu4 <- NaN*t.time.set
   S.simu4[1] <- .75
 I.simu4 <- NaN*t.time.set
-  I.simu4[1] <- .002
+  I.simu4[1] <- .2
 
 for(i in 2:length(t.time.set)){
 

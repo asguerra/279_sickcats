@@ -310,8 +310,8 @@ for(i in 2:length(t.time.set)){
   I <- I.simu7[i-1]
   P <- S + I
   
-  dN <- (r*N*(1-N/K)-mu*N*P) * dt
-  dS <- ((a*mu*N*P)-(d*S) - (beta.pm*(S*I/P))) * dt
+  dN <- (r*N*(1-N/K)-mu*N*S - mu*l*N*I) * dt
+  dS <- (a*N*((mu*S)+(mu*l*I))-(d*S) - (beta.pm*(S*I/P))) * dt
   dI <- (beta.pm* (S*I/P) - d*I -delta*I) * dt
   
   N.simu7[i] <- N + dN
@@ -328,3 +328,6 @@ legend(x=150,y=10, col = c("paleturquoise4","sienna3", "gray21" ), lty=1,lwd=2,l
 text(x=3.5, y=0.04, adj=0, label="FIV introduced")
 
 ```
+
+
+

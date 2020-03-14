@@ -1,36 +1,34 @@
 ---
-title: "Sick Cats Project"
+title: "Sick Cats & Mathematical Modeling"
+subtitle: "Final Project for EEMB279"
 author: "Ana Sofia Guerra & Gabriel Runte"
 output: word_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-Hello! Testing this. Try Comitting and pushing with a response to make sure we get the hang of this. 
  
-```{r packages}
+```{r packages, include=FALSE, echo=FALSE}
 #install.packages("deSolve", dependencies = T)
 library(deSolve)
 require(deSolve)
-
 library(tidyverse) #install.packages('tidyverse)
+library(kableExtra) #install.packages('kableExtra')
 ```
  
-A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
 
 
-# Written Paper
 
-### Introduction
-200 words, at least two references. 
- 
-## The Model
+# A Chalk Talk Abstract
 
-**1. Describe core model equations in words**
+<<Insert our own here.>>
 
-starts with Lotka-Volterra predation model:
+# Introduction
+<<Insert Introduction from Google Doc>>
+  
+# The Model
+  
+A story of sick cats based on the mathematical model by: Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
+  
+Oliveira and Hilker base their model on the Lotka-Volterra predation model, where a logistically-growing bird population (N) is predated on by introduced cats (P).  
 $$
 \begin{align}
 \frac{d N}{dT}  &= rN(1-N/K)-\mu NP 
@@ -40,7 +38,7 @@ $$
 \newline
 \end{align}
 $$
-where:
+Here,  
 N(T): population size of prey (birds)
 P(T): population size of predators (cats)
 T: time
@@ -49,9 +47,9 @@ T: time
 *mu*: predation rate (per capita and unit prey)
 *d*: predator per-capita mortality rate
 *a*: trophic conversion efficiency
-
-...incorporating FIV, P = Susceptible + Infected (with no recovery or immunity), and there is only one stage of the illness (FIV). so:
-
+  
+The introduction of FIV into the cat population is modeled where P = Susceptible cats + Infected cats (with no recovery or immunity), and there is only one stage of the illness (FIV).  
+  
 $$
 \begin{align}
 \ P= S + I
@@ -64,15 +62,12 @@ $$
 \newline
 \end{align}
 $$
-where: $$\theta(P) = \beta_{PM}$$ is the incidence is of proportionate mixing type if the contact rate between predator individuals in constant.
-
-The incidence is of mass action type if the conact rate between predator individuals increases linearly with population size, $$\theta(P) = \beta_{PM} P$$
-
-
-re-writing model equations, with i being disease prevalence: 
-$$ i = I/(S+I) $$
-
-They introduce dimensionless variables (in order to reduce the number of parameters), where:
+  
+where: $$\theta(P) = \beta_{PM}$$ is the incidence is of proportionate mixing type if the contact rate between predator individuals in constant, which is what we will focus on for the purposes of this assignmant. 
+The disease equations can be rearranged to represent disease prevalence (i):  
+$$ i = I/(S+I) $$  
+  
+As many of the parameter values for the original equations are unknown, Oliveira and Hilker inistead opted for  introducing dimensionless variables (in order to reduce the number of parameters), where:  
 $$ 
 \begin{align}
 B=N/K
@@ -82,8 +77,9 @@ C=P\mu /r
 t=rT
 \end{align}
 $$
-**so the main equations in the model are: **
-
+  
+The models then become:  
+  
 $$
 \begin{align}
 \frac{d B}{dt}  &= B(1-B)-BC
@@ -96,22 +92,17 @@ $$
 \newline
 \end{align}
 $$
-where
-
+where  
+  
 $$
 \begin{align}
 \Gamma (C)  &= \frac{\beta_{PM}}{r} = \sigma_{PM}
 \newline
 \newline
-and
-\newline
-\newline
-\Gamma (C)  &= \frac{\beta_{MA}}{\mu}C = \sigma_{MA}C
-\newline
 \end{align}
 $$
-for proportionate mixing and mass action transmission respectively. 
-
+for a proportionate mixing scenario. These models can be roughly interpreted as $$dB/dt$$ being the number of birds relative to their carrying capacity, $$dC/dt$$ is the cat population relative to their attack rate on biirds and the growth rate of birds, and $$di/dt$$ is the prevalence of FIV.  
+The parameters in the nondimensional equations are calculated as:  
 $$
 \begin{align}
 e  &= \frac{a \mu K}{r}
@@ -124,96 +115,43 @@ m  &= \frac{d}{r}
 \newline
 \end{align}
 $$
+where $$e$$ can be considered cats' conversion efficiency/attack rate, $$m$$ is natural cat death, and $$\alpha$$ is sick cat death.  
+  
+## Model Assumptions:
+<<Insert Assumptions from Google Doc >>
 
-#### Coding the model
+## Variables and Parameters
+  
+### Dimensional Equations
+Below are the values and descriptions for the vairables and parameters found in the original dimensional equations:  
 
-A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
+```{r d.variables.table, include=T}
+dv <- data.frame("variable" = c("N","P","S","I"), "definition" = c("bird population","total cat population","susceptible cat","infected cats"), stringsAsFactors = FALSE)
 
-In the case of this model, the authors introduced dimensionless parameters to simply the model and thus avoid making incorrect assumptions about unknown variables such as $$\mu$$, the predation rate, and **K**, the bird population carrying capacity, as well as initial population sizes for birds, cats, and FIV. 
-
-Thus, a lot of our values below are classified as 'NaN' as they are not applied in the model, but do exist. 
-
-```{r known.parameters}
-#known model parameters
-r <- 0.1 #bird growth rate
-a <- 0.03 #trophic conversion efficiency
-d <-  0.6 #(cat natural death rate) 
-BPM <- 1.6 #constant contact rate
-v <-  0.2 #virulence
+kable(dv) %>% kable_styling() 
 ```
 
-```{r unknown.parameters}
-K <- 200#some value here #bird carrying capacity
-mu <- 0.004#some value #cat predation rate
-#BMA <- #some value #contact rate2
-N0 <- 60#some number
-P0 <- 20#some number
-i0 <- 0.1
+```{r d.parameters.table, include=T}
+##have to figure out how to get the greek letter parameters to show. 
+dp <- data.frame("parameter" = c("r","K", "$\\\\mu$","a","d", "$\\\\beta$"
+, "$\\\\delta$"), "definition" = c("per capita growth rate of birds","carrying capacity of birds","predation rate","trophic conversion efficiency","natural per-capita death rate of cats","proportionate mixing contact rate","virulence"), "value" = c("0.1","-","-","0.03","0.6","1.5","0.2"), stringsAsFactors = FALSE)
+
+kable(dp) %>% kable_styling() 
+```
+  
+However, the authors opted against using the dimensional equations as many of the parameters are unknown. Therefore, they used the variables and parameters below, and chose other biologically relevant values for one of the more unknown parameters (e.g. **e**).  
+```{r d.variables.table, include=T}
+ndv <- data.frame("variable" = c("B","C","i"), "definition" = c("bird numbers relative to K","Cat numbers relative to attack rate and bird population growth","FIV prevalence"), stringsAsFactors = FALSE)
+
+kable(ndv) %>% kable_styling() 
+```  
+```{r d.parameters.table, include=T}
+##have to figure out how to get the greek letter parameters to show. 
+ndp <- data.frame("parameter" = c("e","m", "$\\\\alpha$", "$\\\\sigma$"), "definition" = c("cat conversion efficiency/attack rate","natura cat death","infected cat death","contact rate"), "value" = c("10","6","2","15"), stringsAsFactors = FALSE)
+
+kable(ndp) %>% kable_styling() 
 ```
 
-```{r dimensionless.parameters}
-e <- (a*mu*K)/r
-m <- d/r
-al <- v/r
-B0 <- N0/K
-C0 <- (P0*mu)/r
-```
-
-
-
- So do we make the simulations of N divided by K, or just of B, or just of B? I guess it might not matter so long as we pick N0 and K and solve for N later?
-
-```{r variables}
-tset <- seq(from = 0, to = 60, length.out = 100)
-B.sim <- NaN*tset #bird pop 
-C.sim <- NaN*tset #cat pop 
-i.sim <- NaN*tset #disease prevalence
-B.sim[1]<-B0
-C.sim[1]<-C0
-i.sim[1]<-i0
-```
-
-```{r}
-for(j in 2:length(tset)){
-	dt <- tset[j]-tset[j-1]
-	B <- B.sim[j-1] 
-	C <- C.sim[j-1]
-	i <- i.sim[j-1]
-	dB<- B*(1-B)-(B*C)*dt
-	dC <- ((e*B*C)-(m*C)-(al*C*i))*dt 
-	di <- (((BPM/r) - al)*(1-i) - (e*B))*i
-	B.sim[j] <- B + dB 
-	C.sim[j] <- C + dC 
-	i.sim[j] <- i + di 
-}
-```
-
-
-
-```{r}
-Bcol <- 'dodgerblue3'
-Ccol <- 'coral'
-icol <- 'darkgoldenrod4'
-
-
-plot(x = tset, y = B.sim, type = 'l', col=Bcol, las = 1, lwd=2, xlab = 'Time', ylab = 'Number of Individuals', ylim = c(-1000,1000))
-abline(h = 0)
-lines(x = tset, y = C.sim, col = Ccol, lwd = 2)
-lines(x = tset, y = i.sim, col = icol, lwd = 2)
-legend(x = max(tset)*0.1, y = 20, legend=c('B','C','i'),lwd= 2, col=c(Bcol,Ccol,icol), horiz=TRUE)
-```
-
-Looks hella weird!
-
-### Model Assumptions:
-List model assumptions
-
-### Variables and Parameters
-Table of variables and parameters, meanings, units, and any values used in paper
-
-```{r parameters.table, include=T}
-#parameters.table <- data.frame("parameter" = c("r","K",paste($\mu$),"a","d",), "definition" = " ", "value" = , "units" =, stringsAsFactors = FALSE)
-```
 
 ### Time Series
 Show how outcomes differ as a function of interesting parameters. include caption. 

@@ -32,7 +32,7 @@ t.set <- r.v*t.time.set
 
 #dimensionless parameters
 sigma.pm <- 11.75
-e <- 18
+e <- 14
 m <- 6
 alpha <- 5
 
@@ -322,7 +322,7 @@ text(x=3.5, y=0.04, adj=0, label="FIV introduced")
 
 
 ```{r}
-Yset <- seq(8,15,length.out = 50)
+Yset <- seq(8,18,length.out = 500)
 
 B.starset <- NaN*Yset
 C.starset <- NaN*Yset
@@ -362,7 +362,7 @@ for(j in 1:length(Yset)){
 	
 }
 
-plot(Yset, B.starset, type= 'l', lwd=2,col="paleturquoise4",las=1,xlab='Predator mixing, sigma.pm',ylab='Stable equilibria of populations', ylim = c(0,1) )
+plot(Yset, B.starset, type= 'l', lwd=2,col="paleturquoise4",las=1,xlab='Predator mixing, sigma.pm',ylab='Stable equilibria of populations', ylim = c(0,1.3) )
 lines(Yset, C.starset, col="gray21", lwd=2)
 lines(Yset, I.starset, col="sienna3", lwd=2)
 legend(x=8,y=1.0, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("birds", "cats", "FIV"))

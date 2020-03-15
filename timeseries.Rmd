@@ -12,15 +12,10 @@ In the case of this model, the authors introduced dimensionless parameters to si
 
 Thus, a lot of our values below are classified as `NaN` as they are not applied in the model, but do exist. 
 ```{r var.params, include=TRUE}
-##Variables
-#N.v <- NaN    ## population size for victims (birds)
-#N.p <- NaN    ## population size for predators (cats)
+
 t.time.set <- seq(1, 200, length.out= 2000) ## time
 
-##Parameter values##
-#K <- NaN            # carrying capacity               (will be estimated from dimensionless parameters)
-#u <- NaN            # predation rate                  (will be estimated from dimensionless parameters)
-#beta.ma <- NaN      # contact rate for mass action    (will be estimated from dimensionless parameters)    
+
 
 r.v <- 0.1          # per capita growth rate of birds in the model
 a <- 0.03           # trophic conversion efficiency of cats
@@ -28,21 +23,12 @@ d.p <- 0.6          # natural per capita death rate of cats
 beta.pm <- 1.5      # contact rate for proportionate mixing
 delta <- 0.2        # virulence
 
-#core equations
-#B <- N.v/K
 B.set <-seq(0, 1, length.out=20000)
-#C <- N.p*u/r.v
 t.set <- r.v*t.time.set
 
-#dimensionless parameters
+#dimensionless
 sigma.pm <- beta.pm/r.v
-#sigma.pm.set <- seq(0,25, length.out = 20000)
-#sigma.ma <- beta.ma * C/u 
-#sigma.ma.set<- seq(0, 250, length.out = 20000)
-
-#e <- alpha*u*K/r.v
 e <- 10
-#e.set <- seq(0, 25, length.out = 20000)
 m <- d.p/r.v
 alpha <- delta/r.v
 
@@ -179,6 +165,7 @@ text(x=3.5, y=0.04, adj=0, label="FIV introduced")
 ```
 
 ```{r}
+# In dimensional form
 
 mu <- 1 #not given
 a <- 0.6 #trophic conversion

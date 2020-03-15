@@ -1,10 +1,23 @@
 ---
+title: "Untitled"
+author: "Gabe Runte"
+date: "3/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+---
 title: "EEMB 279 Project"
 author: "Gabriel Runte and Ana Sofia Guerra"
 date: "2/18/2020"
 output: html_document
 subtitle: Time Series
 ---
+Testing
+
 
 A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
 
@@ -104,15 +117,6 @@ for(i in 2:length(t.set)){
   I.simu2[i] <- I + dI
 }
 
-<<<<<<< HEAD
-plot(t.set, B.simu2, type= "l", ylim= c(0, 1), ylab="Population (dimensionless)", xlab="time (rT)")  
-lines(t.set,C.simu2,lwd=2,col='dodgerblue')
-lines(t.set, I.simu2, lwd = 2, col= "coral3")
-legend(x=16,y=1.01, col = c("black","dodgerblue","coral3"), lty=1,lwd=2,legend = c("birds", "cats", "FIV"))
-text(x=3.5, y=0.04, adj=0, label="FIV introduced")
-
-
-=======
 #pdf('timeseries_with_fiv.pdf')
 plot(t.set, B.simu2, type= "l", ylim= c(0, 1.2), ylab="Population (dimensionless)", xlab="Time (rT)", col= "paleturquoise4")  
 lines(t.set,C.simu2,lwd=2,col="gray21")
@@ -120,7 +124,6 @@ lines(t.set, I.simu2, lwd = 2, col= "sienna3")
 legend(x=16.5,y=1.2, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
 text(x=3.5, y=0.01, adj=0, label="FIV introduced")
 #dev.off()
->>>>>>> c25400a9c22b500d77fa3e4a116b506c9140600c
 ```
 
 
@@ -380,4 +383,3 @@ lines(Yset, I.starset, col="sienna3", lwd=2)
 legend(x=8,y=1.0, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
 #dev.off()
 ```
-

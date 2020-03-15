@@ -330,4 +330,50 @@ text(x=3.5, y=0.04, adj=0, label="FIV introduced")
 ```
 
 
+```{r}
+Yset <- seq(8,15,length.out = 50)
+
+B.starset <- NaN*Yset
+C.starset <- NaN*Yset
+I.starset <- NaN*Yset
+
+for(j in 1:length(Yset)){ 
+	Y <- Yset[j] 
+	
+	B.simu8 <- NaN*t.set
+	B.simu8[1] <- 0.3
+	C.simu8 <- NaN*t.set
+	C.simu8[1] <- 0.75
+	I.simu8 <- NaN*t.set
+	I.simu8[1] <- 0.2
+	
+	
+	for(i in 2:length(t.set)){ 
+		dt <- t.set[i]-t.set[i-1] 
+		B <- B.simu8[i-1]
+		C <- C.simu8[i-1]
+		I <- I.simu8[i-1]
+
+	  dB <- (B*(1-B) -B*C) *dt
+    dC <- (e*B*C - m*C - alpha*C*I)*dt
+    dI <- (((Y - alpha)* (1-I) - e*B)*I) *dt
+		
+    B.simu8[i] <- B + dB
+    C.simu8[i] <- C + dC
+    I.simu8[i] <- I + dI
+	}
+	
+	
+	B.starset[j] <- B.simu8[length(t.set)]
+	C.starset[j] <- C.simu8[length(t.set)]
+	I.starset[j] <- I.simu8[length(t.set)]
+	
+	
+}
+
+plot(Yset, B.starset, type= 'l', lwd=2,col="paleturquoise4",las=1,xlab='Predator mixing, sigma.pm',ylab='Stable equilibria of populations', ylim = c(0,1) )
+lines(Yset, C.starset, col="gray21", lwd=2)
+lines(Yset, I.starset, col="sienna3", lwd=2)
+legend(x=8,y=1.0, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("birds", "cats", "FIV"))
+```
 

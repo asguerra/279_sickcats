@@ -15,7 +15,7 @@ Thus, a lot of our values below are classified as `NaN` as they are not applied 
 ##Variables
 #N.v <- NaN    ## population size for victims (birds)
 #N.p <- NaN    ## population size for predators (cats)
-t.time.set <- seq(1, 200, length.out= 2000) ## time
+t.time.set <- seq(1, 200, length.out= 20000) ## time
 
 
 
@@ -31,10 +31,10 @@ delta <- 0.2        # virulence
 t.set <- r.v*t.time.set
 
 #dimensionless parameters
-sigma.pm <- beta.pm/r.v
-e <- 10
-m <- d.p/r.v
-alpha <- delta/r.v
+sigma.pm <- 11.75
+e <- 18
+m <- 6
+alpha <- 5
 
 ```
 
@@ -80,7 +80,7 @@ B.simu2 <- NaN*t.set
 C.simu2 <- NaN*t.set
   C.simu2[1] <- .75
 I.simu2 <- NaN*t.set
-# I.simu2[1] <- 0
+ I.simu2[1] <- .2
 ```
 
 ```{r simu2.loop, include=TRUE}

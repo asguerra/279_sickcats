@@ -16,6 +16,8 @@ date: "2/18/2020"
 output: html_document
 subtitle: Time Series
 ---
+Testing
+
 
 A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
 

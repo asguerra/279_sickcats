@@ -12,7 +12,9 @@ In the case of this model, the authors introduced dimensionless parameters to si
 
 Thus, a lot of our values below are classified as `NaN` as they are not applied in the model, but do exist. 
 ```{r var.params, include=TRUE}
-
+##Variables
+#N.v <- NaN    ## population size for victims (birds)
+#N.p <- NaN    ## population size for predators (cats)
 t.time.set <- seq(1, 200, length.out= 2000) ## time
 
 
@@ -23,10 +25,12 @@ d.p <- 0.6          # natural per capita death rate of cats
 beta.pm <- 1.5      # contact rate for proportionate mixing
 delta <- 0.2        # virulence
 
-B.set <-seq(0, 1, length.out=20000)
+#core equations
+#B <- N.v/K
+#C <- N.p*u/r.v
 t.set <- r.v*t.time.set
 
-#dimensionless
+#dimensionless parameters
 sigma.pm <- beta.pm/r.v
 e <- 10
 m <- d.p/r.v

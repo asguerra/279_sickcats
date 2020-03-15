@@ -104,16 +104,18 @@ for(i in 2:length(t.set)){
   I.simu2[i] <- I + dI
 }
 
-plot(t.set, B.simu2, type= "l", ylim= c(0, 1), ylab="Population (dimensionless)", xlab="time (rT)")  
-lines(t.set,C.simu2,lwd=2,col='dodgerblue')
-lines(t.set, I.simu2, lwd = 2, col= "coral3")
-legend(x=16,y=1, col = c("black","dodgerblue","coral3"), lty=1,lwd=2,legend = c("birds", "cats", "FIV"))
-text(x=3.5, y=0.04, adj=0, label="FIV introduced")
+#pdf('timeseries_with_fiv.pdf')
+plot(t.set, B.simu2, type= "l", ylim= c(0, 1.2), ylab="Population (dimensionless)", xlab="Time (rT)", col= "paleturquoise4")  
+lines(t.set,C.simu2,lwd=2,col="gray21")
+lines(t.set, I.simu2, lwd = 2, col= "sienna3")
+legend(x=16.5,y=1.2, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
+text(x=3.5, y=0.01, adj=0, label="FIV introduced")
+#dev.off()
 ```
 
 
 ```{r, trying to add decreased efficiency of hunting with FIV}
-l <- 0.25 #percent activity of sick cats (lathargy)
+l <- 0.15 #percent activity of sick cats (lathargy)
 #for PM
 B.simu3 <- NaN*t.set 
   B.simu3[1] <- .3
@@ -158,14 +160,14 @@ plot(t.set, B.simu3,type= "l", ylim= c(0, 1), ylab="Population (dimensionless)",
 lines(t.set, B.simu2, lwd=2, col= 'coral3')
 
 
+#pdf('timeseries_with_lethargy.pdf')
+plot(t.set, B.simu3, type= "l", ylim= c(0, 1.2), lwd=2, ylab="Population (dimensionless)", xlab="Time (rT)", col='paleturquoise3')  
+lines(t.set,C.simu3,lwd=2,col='gray67')
+lines(t.set, I.simu3, lwd = 2, col= "sienna1")
 
-plot(t.set, B.simu3, type= "l", ylim= c(0, 1), lwd=2, ylab="Population (dimensionless)", xlab="time (rT)", col='paleturquoise4')  
-lines(t.set,C.simu3,lwd=2,col='gray21')
-lines(t.set, I.simu3, lwd = 2, col= "sienna3")
-
-legend(x=16,y=1, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("birds", "cats", "FIV"))
+legend(x=16.5,y=1.2, col = c("paleturquoise3","gray67","sienna1"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
 text(x=3.5, y=0.04, adj=0, label="FIV introduced")
-
+#dev.off()
 ```
 
 ```{r}
@@ -361,10 +363,11 @@ for(j in 1:length(Yset)){
 	
 	
 }
-
-plot(Yset, B.starset, type= 'l', lwd=2,col="paleturquoise4",las=1,xlab='Predator mixing, sigma.pm',ylab='Stable equilibria of populations', ylim = c(0,1.3) )
+#pdf('bifurcation.pdf', width = 7, height = 5)
+plot(Yset, B.starset, type= 'l', lwd=2,col="paleturquoise4",las=1,xlab= expression(paste("Contact rate (", sigma, ")")),ylab='Stable equilibria of populations', ylim = c(0,1.3) )
 lines(Yset, C.starset, col="gray21", lwd=2)
 lines(Yset, I.starset, col="sienna3", lwd=2)
-legend(x=8,y=1.0, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("birds", "cats", "FIV"))
+legend(x=8,y=1.0, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
+#dev.off()
 ```
 

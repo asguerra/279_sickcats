@@ -15,8 +15,6 @@ library(kableExtra) #install.packages('kableExtra')
 ```
  
 
-
-
 # A Chalk Talk Abstract
 
 <<Insert our own here.>>
@@ -28,7 +26,8 @@ library(kableExtra) #install.packages('kableExtra')
   
 A story of sick cats based on the mathematical model by: Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
   
-Oliveira and Hilker base their model on the Lotka-Volterra predation model, where a logistically-growing bird population (N) is predated on by introduced cats (P).  
+Oliveira and Hilker base their model on the Lotka-Volterra predation model, where a logistically-growing bird population (N) is predated on by introduced cats (P) who feed solely on birds and die natural deaths.  
+  
 $$
 \begin{align}
 \frac{d N}{dT}  &= rN(1-N/K)-\mu NP 
@@ -38,16 +37,6 @@ $$
 \newline
 \end{align}
 $$
-Here,  
-N(T): population size of prey (birds)
-P(T): population size of predators (cats)
-T: time
-*r*: per capita growth rate
-*K*: carrying capacity
-*mu*: predation rate (per capita and unit prey)
-*d*: predator per-capita mortality rate
-*a*: trophic conversion efficiency
-  
 The introduction of FIV into the cat population is modeled where P = Susceptible cats + Infected cats (with no recovery or immunity), and there is only one stage of the illness (FIV).  
   
 $$
@@ -63,10 +52,11 @@ $$
 \end{align}
 $$
   
-where: $$\theta(P) = \beta_{PM}$$ is the incidence is of proportionate mixing type if the contact rate between predator individuals in constant, which is what we will focus on for the purposes of this assignmant. 
+where: $$\theta(P) = \beta_{PM}$$ is the incidence is of proportionate mixing type if the contact rate between predator individuals in constant, which is what we will focus on for the purposes of this assignment.   
+  
 The disease equations can be rearranged to represent disease prevalence (i):  
 $$ i = I/(S+I) $$  
-  
+    
 As many of the parameter values for the original equations are unknown, Oliveira and Hilker inistead opted for  introducing dimensionless variables (in order to reduce the number of parameters), where:  
 $$ 
 \begin{align}
@@ -101,7 +91,7 @@ $$
 \newline
 \end{align}
 $$
-for a proportionate mixing scenario. These models can be roughly interpreted as $$dB/dt$$ being the number of birds relative to their carrying capacity, $$dC/dt$$ is the cat population relative to their attack rate on biirds and the growth rate of birds, and $$di/dt$$ is the prevalence of FIV.  
+for a proportionate mixing scenario.  
 The parameters in the nondimensional equations are calculated as:  
 $$
 \begin{align}
@@ -115,7 +105,6 @@ m  &= \frac{d}{r}
 \newline
 \end{align}
 $$
-where $$e$$ can be considered cats' conversion efficiency/attack rate, $$m$$ is natural cat death, and $$\alpha$$ is sick cat death.  
   
 ## Model Assumptions:
 <<Insert Assumptions from Google Doc >>
@@ -133,8 +122,8 @@ kable(dv) %>% kable_styling()
 
 ```{r d.parameters.table, include=T}
 ##have to figure out how to get the greek letter parameters to show. 
-dp <- data.frame("parameter" = c("r","K", "$\\\\mu$","a","d", "$\\\\beta$"
-, "$\\\\delta$"), "definition" = c("per capita growth rate of birds","carrying capacity of birds","predation rate","trophic conversion efficiency","natural per-capita death rate of cats","proportionate mixing contact rate","virulence"), "value" = c("0.1","-","-","0.03","0.6","1.5","0.2"), stringsAsFactors = FALSE)
+dp <- data.frame("parameter" = c("r","K", "$\\mu$","a","d", "$\\beta$"
+, "$\\delta$"), "definition" = c("per capita growth rate of birds","carrying capacity of birds","predation rate","trophic conversion efficiency","natural per-capita death rate of cats","proportionate mixing contact rate","virulence"), "value" = c("0.1","-","-","0.03","0.6","1.5","0.2"), stringsAsFactors = FALSE)
 
 kable(dp) %>% kable_styling() 
 ```

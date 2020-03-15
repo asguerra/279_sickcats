@@ -1,0 +1,383 @@
+---
+title: "Untitled"
+author: "Gabe Runte"
+date: "3/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+---
+title: "EEMB 279 Project"
+author: "Gabriel Runte and Ana Sofia Guerra"
+date: "2/18/2020"
+output: html_document
+subtitle: Time Series
+---
+
+A time series simulation of the model by Oliveira NM & Hilker FM (2010), Modelling disease introduction as biological control of invasive predators to preserve endangered prey, **Bulletin of Mathematical Biology**, 72:444-468. 
+
+In the case of this model, the authors introduced dimensionless parameters to simply the model and thus avoid making incorrect assumptions about unknown variables such as$$\mu$$, the predation rate, and **K**, the bird population carrying capacity, as well as initial population sizes for birds, cats, and FIV. 
+
+Thus, a lot of our values below are classified as `NaN` as they are not applied in the model, but do exist. 
+```{r var.params, include=TRUE}
+##Variables
+#N.v <- NaN    ## population size for victims (birds)
+#N.p <- NaN    ## population size for predators (cats)
+t.time.set <- seq(1, 200, length.out= 20000) ## time
+
+
+
+r.v <- 0.1          # per capita growth rate of birds in the model
+a <- 0.03           # trophic conversion efficiency of cats
+d.p <- 0.6          # natural per capita death rate of cats
+beta.pm <- 1.5      # contact rate for proportionate mixing
+delta <- 0.2        # virulence
+
+#core equations
+#B <- N.v/K
+#C <- N.p*u/r.v
+t.set <- r.v*t.time.set
+
+#dimensionless parameters
+sigma.pm <- 11.75
+e <- 14
+m <- 6
+alpha <- 5
+
+```
+
+In this time series we selected a biologically relevant, yet random value for e (10 in this case), from the range provided by the authors of the study. We can produce a time series with different values of e. In this simulation, the disease is present at the beginning. 
+```{r Simu1, include=T}
+B.simu1 <- NaN*t.set 
+  B.simu1[1] <- .3
+C.simu1 <- NaN*t.set
+  C.simu1[1] <- .75
+I.simu1 <- NaN*t.set
+ I.simu1[1] <- 0.2
+
+#for PM
+for(i in 2:length(t.set)){
+  
+  dt <- t.set[i]-t.set[i-1]
+  B <- B.simu1[i-1]
+  C <- C.simu1[i-1]
+  I <- I.simu1[i-1]
+  
+  dB <- (B*(1-B) -B*C) *dt
+  dC <- (e*B*C - m*C - alpha*C*I)*dt
+  dI <- (((sigma.pm - alpha)* (1-I) - e*B)*I) *dt
+  
+  B.simu1[i] <- B + dB
+  C.simu1[i] <- C + dC
+  I.simu1[i] <- I + dI
+}
+
+  
+plot(t.set, B.simu1, type= "l", ylim= c(0, 1), ylab="Population (dimensionless)", xlab="time (rT)")  
+lines(t.set,C.simu1,lwd=2,col='dodgerblue')
+lines(t.set, I.simu1, lwd = 2, col= "coral3")
+legend(x=16,y=1, col = c("black","dodgerblue","coral3"), lty=1,lwd=2,legend = c("birds", "cats", "FIV"))
+
+```
+
+As was done in a time series in the study, there was a lag in the introduction of FIV to the cat population. In this case we introduced FIV at time step 3. 
+
+```{r simu2, include=TRUE}
+B.simu2 <- NaN*t.set 
+  B.simu2[1] <- .3
+C.simu2 <- NaN*t.set
+  C.simu2[1] <- .75
+I.simu2 <- NaN*t.set
+ I.simu2[1] <- .2
+```
+
+```{r simu2.loop, include=TRUE}
+#for PM
+for(i in 2:length(t.set)){
+  
+  	if(t.set[i] < 3){I.simu2[i-1] <- 0 } else { 
+  	  if(t.set[i] == 3) {I.simu2[i-1] <- 0.2} else { I<- I.simu2[i-1]}}
+	
+  dt <- t.set[i]-t.set[i-1]
+  B <- B.simu2[i-1]
+  C <- C.simu2[i-1]
+  #I.simu2[i-1]
+  
+  dB <- (B*(1-B) -B*C) *dt
+  dC <- (e*B*C - m*C - alpha*C*I)*dt
+  dI <- (((sigma.pm - alpha)* (1-I) - e*B)*I) *dt
+  
+  B.simu2[i] <- B + dB
+  C.simu2[i] <- C + dC
+  I.simu2[i] <- I + dI
+}
+
+#pdf('timeseries_with_fiv.pdf')
+plot(t.set, B.simu2, type= "l", ylim= c(0, 1.2), ylab="Population (dimensionless)", xlab="Time (rT)", col= "paleturquoise4")  
+lines(t.set,C.simu2,lwd=2,col="gray21")
+lines(t.set, I.simu2, lwd = 2, col= "sienna3")
+legend(x=16.5,y=1.2, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
+text(x=3.5, y=0.01, adj=0, label="FIV introduced")
+#dev.off()
+```
+
+
+```{r, trying to add decreased efficiency of hunting with FIV}
+l <- 0.15 #percent activity of sick cats (lathargy)
+#for PM
+B.simu3 <- NaN*t.set 
+  B.simu3[1] <- .3
+C.simu3 <- NaN*t.set
+  C.simu3[1] <- .75
+I.simu3 <- NaN*t.set
+#I.simu3[1] <- 0
+
+for(i in 2:length(t.set)){
+  
+  	if(t.set[i] < 3){I.simu3[i-1] <- 0 } else { 
+  	  if(t.set[i] == 3) {I.simu3[i-1] <- 0.2} else { I<- I.simu3[i-1]}}
+	
+  dt <- t.set[i]-t.set[i-1]
+  B <- B.simu3[i-1]
+  C <- C.simu3[i-1]
+  #I.simu3[i-1]
+  
+  dB <- (B*(1-B) -B*C*(1-I) - l*B*I*C ) *dt
+  dC <- (e*(B*C*(1-I) + l*B*I*C) - m*C - alpha*C*I)*dt
+  dI <- (((sigma.pm - alpha)* (1-I) - e*B)*I) *dt
+  
+  B.simu3[i] <- B + dB
+  C.simu3[i] <- C + dC
+  I.simu3[i] <- I + dI
+}
+
+plot(t.set, B.simu3, type= "l", ylim= c(0, 1), xlim=c(0, 25), ylab="Population (dimensionless)", xlab="time (rT)", col='paleturquoise4')  
+lines(t.set,C.simu3,lwd=2,col='gray21')
+lines(t.set, I.simu3, lwd = 2, col= "sienna3")
+lines(t.set,C.simu2,lwd=2, lty= 2, col='gray67')
+lines(t.set, I.simu2, lwd = 2,lty= 2, col= "sienna1")
+lines(t.set,B.simu2,lwd=2,lty= 2, col='paleturquoise3')
+
+legend(x=17,y=1, col = c("paleturquoise4","paleturquoise3","sienna3", "sienna1", "gray21", "gray67"), lty=1,lwd=2,legend = c("birds w/ FIV effect", "regular birds", "FIV w/ FIV effect", " regular FIV", "cats w/ FIV effect", "regular cats"))
+text(x=3.5, y=0.04, adj=0, label="FIV introduced")
+
+
+
+
+plot(t.set, B.simu3,type= "l", ylim= c(0, 1), ylab="Population (dimensionless)", xlab="time (rT)", col= 'Dodgerblue2')
+lines(t.set, B.simu2, lwd=2, col= 'coral3')
+
+
+#pdf('timeseries_with_lethargy.pdf')
+plot(t.set, B.simu3, type= "l", ylim= c(0, 1.2), lwd=2, ylab="Population (dimensionless)", xlab="Time (rT)", col='paleturquoise3')  
+lines(t.set,C.simu3,lwd=2,col='gray67')
+lines(t.set, I.simu3, lwd = 2, col= "sienna1")
+
+legend(x=16.5,y=1.2, col = c("paleturquoise3","gray67","sienna1"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
+text(x=3.5, y=0.04, adj=0, label="FIV introduced")
+#dev.off()
+```
+
+```{r}
+# In dimensional form
+
+mu <- 1 #not given
+a <- 0.6 #trophic conversion
+d <- 0.15 #per capita death
+beta.pm <- .75 #pm contact rate
+delta <- .1 # virulence
+K<- 1
+r<- .4
+
+l <- 0.25 #percent activity of sick cats (lathargy)
+#for PM
+N.simu4 <- NaN*t.time.set 
+  N.simu4[1] <- .3
+S.simu4 <- NaN*t.time.set
+  S.simu4[1] <- .7
+I.simu4 <- NaN*t.time.set
+  I.simu4[1] <- .2
+
+for(i in 2:length(t.time.set)){
+  
+	
+  dt <- t.time.set[i]-t.time.set[i-1]
+  N <- N.simu4[i-1]
+  S <- S.simu4[i-1]
+  I <- I.simu4[i-1]
+  
+  P <- S + I
+  
+  dN <- (r*N*(1-N/K)-mu*N*P) * dt
+  dS <- ((a*mu*N*P)-(d*S) - (beta.pm*(S*I/P))) * dt
+  dI <- (beta.pm* (S*I/P) - d*I -delta*I) * dt
+  
+  N.simu4[i] <- N + dN
+  S.simu4[i] <- S + dS
+  I.simu4[i] <- I + dI
+ }
+
+plot(t.time.set, N.simu4, type= "l", ylim= c(0,1), ylab="Population (dimensionless)", xlab="time (rT)", col='paleturquoise4')  
+lines(t.time.set,S.simu4,lwd=2,col='gray21')
+lines(t.time.set, I.simu4, lwd = 2, col= "sienna3")
+
+
+legend(x=150,y=10, col = c("paleturquoise4","sienna3", "gray21" ), lty=1,lwd=2,legend = c( "regular birds",  " regular FIV", "regular cats"))
+text(x=3.5, y=0.04, adj=0, label="FIV introduced")
+
+
+
+
+
+```
+
+```{r}
+mu <- 1 #predation rate
+a <- 0.6 #trophic conversion
+d <- 0.15 #per capita death
+#beta.pm <- .33 #pm contact rate
+#delta <- .16 # virulence
+K<- 1
+r<- .7
+
+l <- 0.25 #percent activity of sick cats (lathargy)
+#for PM
+N.simu6 <- NaN*t.time.set 
+  N.simu6[1] <- .3
+S.simu6 <- NaN*t.time.set
+  S.simu6[1] <- .7
+I.simu6 <- NaN*t.time.set
+ # I.simu6[1] <- .0
+
+for(i in 2:length(t.time.set)){
+  
+ if(t.time.set[i] < 30){I.simu6[i-1] <- 0 } else { 
+  	 if((t.time.set[i] > 30.068533) &&(t.time.set[i] < 30.168082)) {I.simu6[i-1] <- 0.2} else {}}
+	
+  dt <- t.time.set[i]-t.time.set[i-1]
+  N <- N.simu6[i-1]
+  S <- S.simu6[i-1]
+  I <- I.simu6[i-1]
+  P <- S + I
+  
+  dN <- (r*N*(1-N/K)-mu*N*P) * dt
+  dS <- ((a*mu*N*P)-(d*S) - (beta.pm*(S*I/P))) * dt
+  dI <- (beta.pm* (S*I/P) - d*I -delta*I) * dt
+  
+  N.simu6[i] <- N + dN
+  S.simu6[i] <- S + dS
+  I.simu6[i] <- I + dI
+ }
+
+plot(t.time.set, N.simu6, type= "l", ylim= c(0,1),ylab="Population (dimensionless)", xlab="time (rT)", col='paleturquoise4')  
+lines(t.time.set, S.simu6,lwd=2,col='gray21')
+lines(t.time.set, I.simu6, lwd = 2, col= "sienna3")
+
+
+legend(x=150,y=10, col = c("paleturquoise4","sienna3", "gray21" ), lty=1,lwd=2,legend = c( "regular birds",  " regular FIV", "regular cats"))
+text(x=3.5, y=0.04, adj=0, label="FIV introduced")
+
+
+```
+
+
+```{r}
+#NOW WITH LETHARGY
+mu <- 1 #predation rate
+a <- 0.6 #trophic conversion
+d <- 0.15 #per capita death
+#beta.pm <- .33 #pm contact rate
+#delta <- .16 # virulence
+K<- 1
+r<- .7
+
+l <- 0.25 #percent activity of sick cats (lathargy)
+#for PM
+N.simu7 <- NaN*t.time.set 
+  N.simu7[1] <- .3
+S.simu7 <- NaN*t.time.set
+  S.simu7[1] <- .7
+I.simu7 <- NaN*t.time.set
+ # I.simu7[1] <- .0
+
+for(i in 2:length(t.time.set)){
+  
+ if(t.time.set[i] < 30){I.simu7[i-1] <- 0 } else { 
+  	 if((t.time.set[i] > 30.068533) &&(t.time.set[i] < 30.168082)) {I.simu7[i-1] <- 0.2} else {}}
+	
+  dt <- t.time.set[i]-t.time.set[i-1]
+  N <- N.simu7[i-1]
+  S <- S.simu7[i-1]
+  I <- I.simu7[i-1]
+  P <- S + I
+  
+  dN <- (r*N*(1-N/K)-mu*N*S - mu*l*N*I) * dt
+  dS <- (a*N*((mu*S)+(mu*l*I))-(d*S) - (beta.pm*(S*I/P))) * dt
+  dI <- (beta.pm* (S*I/P) - d*I -delta*I) * dt
+  
+  N.simu7[i] <- N + dN
+  S.simu7[i] <- S + dS
+  I.simu7[i] <- I + dI
+ }
+
+plot(t.time.set, N.simu7, type= "l", ylim= c(0,1),ylab="Population (dimensionless)", xlab="time (rT)", col='paleturquoise4')  
+lines(t.time.set, S.simu7,lwd=2,col='gray21')
+lines(t.time.set, I.simu7, lwd = 2, col= "sienna3")
+
+
+legend(x=150,y=10, col = c("paleturquoise4","sienna3", "gray21" ), lty=1,lwd=2,legend = c( "regular birds",  " regular FIV", "regular cats"))
+text(x=3.5, y=0.04, adj=0, label="FIV introduced")
+
+```
+
+
+```{r}
+Yset <- seq(8,18,length.out = 500)
+
+B.starset <- NaN*Yset
+C.starset <- NaN*Yset
+I.starset <- NaN*Yset
+
+for(j in 1:length(Yset)){ 
+	Y <- Yset[j] 
+	
+	B.simu8 <- NaN*t.set
+	B.simu8[1] <- 0.3
+	C.simu8 <- NaN*t.set
+	C.simu8[1] <- 0.75
+	I.simu8 <- NaN*t.set
+	I.simu8[1] <- 0.2
+	
+	
+	for(i in 2:length(t.set)){ 
+		dt <- t.set[i]-t.set[i-1] 
+		B <- B.simu8[i-1]
+		C <- C.simu8[i-1]
+		I <- I.simu8[i-1]
+
+	  dB <- (B*(1-B) -B*C) *dt
+    dC <- (e*B*C - m*C - alpha*C*I)*dt
+    dI <- (((Y - alpha)* (1-I) - e*B)*I) *dt
+		
+    B.simu8[i] <- B + dB
+    C.simu8[i] <- C + dC
+    I.simu8[i] <- I + dI
+	}
+	
+	
+	B.starset[j] <- B.simu8[length(t.set)]
+	C.starset[j] <- C.simu8[length(t.set)]
+	I.starset[j] <- I.simu8[length(t.set)]
+	
+	
+}
+#pdf('bifurcation.pdf', width = 7, height = 5)
+plot(Yset, B.starset, type= 'l', lwd=2,col="paleturquoise4",las=1,xlab= expression(paste("Contact rate (", sigma, ")")),ylab='Stable equilibria of populations', ylim = c(0,1.3) )
+lines(Yset, C.starset, col="gray21", lwd=2)
+lines(Yset, I.starset, col="sienna3", lwd=2)
+legend(x=8,y=1.0, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
+#dev.off()
+```

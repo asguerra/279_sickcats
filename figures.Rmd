@@ -118,10 +118,10 @@ for(i in 2:length(t.set)){
 }
 
 #pdf('timeseries_with_fiv.pdf')
-plot(t.set, B.simu2, type= "l", ylim= c(0, 1.8), ylab="Population (dimensionless)", xlab="Time (rT)", col= "paleturquoise4")  
+plot(t.set, B.simu2, type= "l", ylim= c(0, 1.3), ylab="Population (dimensionless)", xlab="Time (rT)", col= "paleturquoise4")  
 lines(t.set,C.simu2,lwd=2,col="gray21")
 lines(t.set, I.simu2, lwd = 2, col= "sienna3")
-legend(x=0,y=1.8, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
+legend(x=16,y=1.3, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
 text(x=3.5, y=0.01, adj=0, label="FIV introduced")
 #dev.off()
 ```

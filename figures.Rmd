@@ -183,62 +183,10 @@ text(x=3.5, y=0.04, adj=0, label="FIV introduced")
 #dev.off()
 ```
 
-```{r}
-# In dimensional form
-
-mu <- 1 #not given
-a <- 0.6 #trophic conversion
-d <- 0.15 #per capita death
-beta.pm <- .75 #pm contact rate
-delta <- .1 # virulence
-K<- 1
-r<- .4
-
-l <- 0.25 #percent activity of sick cats (lathargy)
-#for PM
-N.simu4 <- NaN*t.time.set 
-  N.simu4[1] <- .3
-S.simu4 <- NaN*t.time.set
-  S.simu4[1] <- .7
-I.simu4 <- NaN*t.time.set
-  I.simu4[1] <- .2
-
-for(i in 2:length(t.time.set)){
-  
-	
-  dt <- t.time.set[i]-t.time.set[i-1]
-  N <- N.simu4[i-1]
-  S <- S.simu4[i-1]
-  I <- I.simu4[i-1]
-  
-  P <- S + I
-  
-  dN <- (r*N*(1-N/K)-mu*N*P) * dt
-  dS <- ((a*mu*N*P)-(d*S) - (beta.pm*(S*I/P))) * dt
-  dI <- (beta.pm* (S*I/P) - d*I -delta*I) * dt
-  
-  N.simu4[i] <- N + dN
-  S.simu4[i] <- S + dS
-  I.simu4[i] <- I + dI
- }
-
-plot(t.time.set, N.simu4, type= "l", ylim= c(0,1), ylab="Population (dimensionless)", xlab="time (rT)", col='paleturquoise4')  
-lines(t.time.set,S.simu4,lwd=2,col='gray21')
-lines(t.time.set, I.simu4, lwd = 2, col= "sienna3")
-
-
-legend(x=150,y=10, col = c("paleturquoise4","sienna3", "gray21" ), lty=1,lwd=2,legend = c( "regular birds",  " regular FIV", "regular cats"))
-text(x=3.5, y=0.04, adj=0, label="FIV introduced")
-
-
-
-
-
-```
 
 ```{r}
 mu <- 1 #predation rate
-a <- 0.6 #trophic conversion
+a <- 0.8 #trophic conversion
 d <- 0.15 #per capita death
 #beta.pm <- .33 #pm contact rate
 #delta <- .16 # virulence

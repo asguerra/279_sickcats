@@ -117,7 +117,7 @@ for(i in 2:length(t.set)){
   I.simu2[i] <- I + dI
 }
 
-#pdf('timeseries_with_fiv.pdf')
+#pdf('timeseries_with_fiv.pdf', width= 7, height = 5)
 plot(t.set, B.simu2, type= "l", ylim= c(0, 1.3), ylab="Population (dimensionless)", xlab="Time (rT)", col= "paleturquoise4")  
 lines(t.set,C.simu2,lwd=2,col="gray21")
 lines(t.set, I.simu2, lwd = 2, col= "sienna3")

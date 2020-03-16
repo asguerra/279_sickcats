@@ -47,7 +47,7 @@ t.set <- r.v*t.time.set
 sigma.pm <- 11.75
 e <- 14
 m <- 6
-alpha <- 5
+alpha <- 3
 
 ```
 
@@ -118,10 +118,10 @@ for(i in 2:length(t.set)){
 }
 
 #pdf('timeseries_with_fiv.pdf')
-plot(t.set, B.simu2, type= "l", ylim= c(0, 1.2), ylab="Population (dimensionless)", xlab="Time (rT)", col= "paleturquoise4")  
+plot(t.set, B.simu2, type= "l", ylim= c(0, 1.8), ylab="Population (dimensionless)", xlab="Time (rT)", col= "paleturquoise4")  
 lines(t.set,C.simu2,lwd=2,col="gray21")
 lines(t.set, I.simu2, lwd = 2, col= "sienna3")
-legend(x=16.5,y=1.2, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
+legend(x=0,y=1.8, col = c("paleturquoise4","gray21","sienna3"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
 text(x=3.5, y=0.01, adj=0, label="FIV introduced")
 #dev.off()
 ```
@@ -156,29 +156,29 @@ for(i in 2:length(t.set)){
   I.simu3[i] <- I + dI
 }
 
-plot(t.set, B.simu3, type= "l", ylim= c(0, 1), xlim=c(0, 25), ylab="Population (dimensionless)", xlab="time (rT)", col='paleturquoise4')  
-lines(t.set,C.simu3,lwd=2,col='gray21')
-lines(t.set, I.simu3, lwd = 2, col= "sienna3")
-lines(t.set,C.simu2,lwd=2, lty= 2, col='gray67')
-lines(t.set, I.simu2, lwd = 2,lty= 2, col= "sienna1")
-lines(t.set,B.simu2,lwd=2,lty= 2, col='paleturquoise3')
+#plot(t.set, B.simu3, type= "l", ylim= c(0, 1), xlim=c(0, 25), ylab="Population (dimensionless)", xlab="time (rT)", col='paleturquoise4')  
+#lines(t.set,C.simu3,lwd=2,col='gray21')
+#lines(t.set, I.simu3, lwd = 2, col= "sienna3")
+#lines(t.set,C.simu2,lwd=2, lty= 2, col='gray67')
+#lines(t.set, I.simu2, lwd = 2,lty= 2, col= "sienna1")
+#lines(t.set,B.simu2,lwd=2,lty= 2, col='paleturquoise3')
 
-legend(x=17,y=1, col = c("paleturquoise4","paleturquoise3","sienna3", "sienna1", "gray21", "gray67"), lty=1,lwd=2,legend = c("birds w/ FIV effect", "regular birds", "FIV w/ FIV effect", " regular FIV", "cats w/ FIV effect", "regular cats"))
-text(x=3.5, y=0.04, adj=0, label="FIV introduced")
-
-
+#legend(x=17,y=1, col = c("paleturquoise4","paleturquoise3","sienna3", "sienna1", "gray21", "gray67"), lty=1,lwd=2,legend = c("birds w/ FIV effect", "regular birds", "FIV w/ FIV effect", " regular FIV", "cats w/ FIV effect", "regular cats"))
+#text(x=3.5, y=0.04, adj=0, label="FIV introduced")
 
 
-plot(t.set, B.simu3,type= "l", ylim= c(0, 1), ylab="Population (dimensionless)", xlab="time (rT)", col= 'Dodgerblue2')
-lines(t.set, B.simu2, lwd=2, col= 'coral3')
+
+
+#plot(t.set, B.simu3,type= "l", ylim= c(0, 1), ylab="Population (dimensionless)", xlab="time (rT)", col= 'Dodgerblue2')
+#lines(t.set, B.simu2, lwd=2, col= 'coral3')
 
 
 #pdf('timeseries_with_lethargy.pdf')
-plot(t.set, B.simu3, type= "l", ylim= c(0, 1.2), lwd=2, ylab="Population (dimensionless)", xlab="Time (rT)", col='paleturquoise3')  
+plot(t.set, B.simu3, type= "l", ylim= c(0, 1.8), lwd=2, ylab="Population (dimensionless)", xlab="Time (rT)", col='paleturquoise3')  
 lines(t.set,C.simu3,lwd=2,col='gray67')
 lines(t.set, I.simu3, lwd = 2, col= "sienna1")
 
-legend(x=16.5,y=1.2, col = c("paleturquoise3","gray67","sienna1"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
+legend(x=0,y=1.8, col = c("paleturquoise3","gray67","sienna1"), lty=1,lwd=2,legend = c("Birds", "Cats", "FIV"))
 text(x=3.5, y=0.04, adj=0, label="FIV introduced")
 #dev.off()
 ```
